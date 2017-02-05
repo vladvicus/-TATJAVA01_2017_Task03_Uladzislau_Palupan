@@ -1,0 +1,19 @@
+book,Beth Lewis,The Wolf Road,200,15.91
+book,Noah Hawley,Before the Fall,150,18.2
+film,T2 Trainspotting,USA,2017,5
+film,Ballerina,USA,2017,7
+book,Colson Whitehead,The Underground Railroad ,190,16.7
+disk,CD,Electronic music,2015,3
+book,J.K. Rowling,Harry Potter and the Cursed Child,300,14.99
+disk,DVD,Rupture(film),2017,4
+book,Noah Tolkien,The Hobbit and the Lord of the Rings,500,22.62
+book,J.R.R. Tolkien,The Silmarillion,250,11.55
+film,Avatar,USA,2009,9
+book,Tolkien,Hobbit,200,15.56
+disk,dvd,Sherlock(3rd season),2015,3.6
+book,Daymon,Make people happy,233,12.5
+book,Tolkien,Hobbit,299,20,9
+disk,CD,Mexicanissimo(Yanni),2013,1.2
+film,Green mile,USA,1998,8
+film,Armagedon,USA,2005,6
+film,Knockin on Heavens Door,USA,2007,10
