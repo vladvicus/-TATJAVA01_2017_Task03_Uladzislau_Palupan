@@ -9,10 +9,9 @@ import com.epam.catalog.service.exception.ServiceException;
 import java.util.List;
 
 public class BookServiceImpl implements BookService {
-
+	static final String RESPONSE = "Error during searching procedure from BookServiceImpl ";
 	@Override
 	public void addBook(String book) throws ServiceException {
-
 		String response = null;
 		try {
 			DaoFactory daoFactory = DaoFactory.getInstance();
@@ -21,8 +20,8 @@ public class BookServiceImpl implements BookService {
 			bookDao.addBook(book);
 
 		} catch (DaoException e) {
-			response = "Error during searching procedure from BookServiceImpl";
-			throw new ServiceException(response);
+
+			throw new ServiceException(RESPONSE+e);
 
 			// write log
 		}
@@ -40,8 +39,8 @@ public class BookServiceImpl implements BookService {
 
 			return booksFind;
 		} catch (DaoException e) {
-			response = "Error during searching procedure from BookServiceImpl";
-			throw new ServiceException(response);
+
+			throw new ServiceException(RESPONSE+e);
 
 		}
 	}
@@ -58,8 +57,8 @@ public class BookServiceImpl implements BookService {
 
 			return booksFind;
 		} catch (DaoException e) {
-			response = "Error during searching procedure from BookServiceImpl";
-			throw new ServiceException(response);
+
+			throw new ServiceException(RESPONSE+e);
 
 			// write log
 		}
