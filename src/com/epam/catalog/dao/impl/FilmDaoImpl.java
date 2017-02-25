@@ -1,15 +1,11 @@
 package com.epam.catalog.dao.impl;
 
 import com.epam.catalog.bean.Film;
-
 import com.epam.catalog.dao.FilmDao;
 import com.epam.catalog.dao.exception.DaoException;
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Paths;
+import com.epam.catalog.view.Main;
+
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -17,7 +13,7 @@ import java.util.Set;
 
 public class FilmDaoImpl implements FilmDao {
 	private Set<Film> films = new HashSet<>();
-	String datafile = Paths.get("data/units.txt").toAbsolutePath().toString();
+
 
 	public Set<Film> getFilms() {
 		return films;
@@ -31,7 +27,7 @@ public class FilmDaoImpl implements FilmDao {
 	public void addFilm(String film) throws DaoException {
 		FileWriter wr = null;
 		try {
-			wr = new FileWriter(datafile, true);
+			wr = new FileWriter(Main.datafile, true);
 			wr.append("\n" + film);
 			wr.flush();
 			wr.close();
@@ -49,7 +45,7 @@ public class FilmDaoImpl implements FilmDao {
 		List<Film> filmsFoundByName = new ArrayList<>();
 
 		try {
-			readFile(datafile);
+			readFile(Main.datafile);
 
 		} catch (IOException e) {
 
@@ -73,7 +69,7 @@ public class FilmDaoImpl implements FilmDao {
 		List<Film> filmsFoundByPrice = new ArrayList<>();
 
 		try {
-			readFile(datafile);
+			readFile(Main.datafile);
 
 		} catch (IOException e) {
 

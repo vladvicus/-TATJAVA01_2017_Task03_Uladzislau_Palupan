@@ -1,20 +1,14 @@
 package com.epam.catalog.view;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.epam.catalog.controller.Controller;
+
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import com.epam.catalog.bean.Book;
-import com.epam.catalog.controller.Controller;
-import com.epam.catalog.controller.command.Command;
-import com.epam.catalog.controller.command.CommandName;
-import com.sun.prism.Mesh;
-
 public class Main {
-
+	public final static String datafile = Paths.get("data/units.txt").toAbsolutePath().toString();
 	public static void main(String[] args) {
 		int flag;
 		Controller first = new Controller();

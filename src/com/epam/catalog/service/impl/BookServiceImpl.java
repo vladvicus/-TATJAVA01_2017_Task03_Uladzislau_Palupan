@@ -6,30 +6,46 @@ import com.epam.catalog.dao.exception.DaoException;
 import com.epam.catalog.dao.factory.DaoFactory;
 import com.epam.catalog.service.BookService;
 import com.epam.catalog.service.exception.ServiceException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookServiceImpl implements BookService {
 	static final String RESPONSE = "Error during searching procedure from BookServiceImpl ";
 	@Override
-	public void addBook(String book) throws ServiceException {
-		String response = null;
-		try {
+	public List<Book> addBook() throws ServiceException {
+
+
+			Book book = new Book();
+			Book newBook = book.makeBook();
+			List<Book> addedBook = new ArrayList<Book>();
+			addedBook.add(newBook);
+
+			StringBuffer sb = new StringBuffer();
+			sb.append(newBook.getAuthor() + ",");
+			sb.append(newBook.getName() + ",");
+			sb.append(newBook.getPages() + ",");
+			sb.append(newBook.getPrice());
+			String message = "book," + sb.toString();
+
 			DaoFactory daoFactory = DaoFactory.getInstance();
 			BookDao bookDao = daoFactory.getBookDao();
+		try {
+			bookDao.addBook(message);
 
-			bookDao.addBook(book);
 
 		} catch (DaoException e) {
 
-			throw new ServiceException(RESPONSE+e);
+			throw new ServiceException(RESPONSE + e);
 
 			// write log
 		}
+		return addedBook;
 	}
 
 	@Override
 	public List<Book> findBooksLessThenPrice(Double price) throws ServiceException {
-		String response = null;
+
 
 		try {
 			DaoFactory daoFactory = DaoFactory.getInstance();
@@ -48,7 +64,6 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<Book> findBooksByAuthor(String author) throws ServiceException {
 
-		String response = null;
 		try {
 			DaoFactory daoFactory = DaoFactory.getInstance();
 			BookDao bookDao = daoFactory.getBookDao();

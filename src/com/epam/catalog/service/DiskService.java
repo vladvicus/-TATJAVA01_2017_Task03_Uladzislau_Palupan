@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DiskService {
 
-    void addDisk(String disk) throws ServiceException;
+    List<Disk> addDisk() throws ServiceException;
 
    
 

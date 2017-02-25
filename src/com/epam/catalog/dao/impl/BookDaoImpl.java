@@ -3,19 +3,15 @@ package com.epam.catalog.dao.impl;
 import com.epam.catalog.bean.Book;
 import com.epam.catalog.dao.BookDao;
 import com.epam.catalog.dao.exception.DaoException;
+import com.epam.catalog.view.Main;
 
 import java.io.*;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class BookDaoImpl implements BookDao {
 
 	private Set<Book> books = new HashSet<>();
-	String datafile = Paths.get("data/units.txt").toAbsolutePath().toString();
+
 
 	public Set<Book> getBooks() {
 		return books;
@@ -29,12 +25,12 @@ public class BookDaoImpl implements BookDao {
 	public void addBook(String book) throws DaoException {
 		FileWriter wr = null;
 		try {
-			wr = new FileWriter(datafile, true);
+			wr = new FileWriter(Main.datafile, true);
 			wr.append("\n" + book);
 			wr.flush();
 			wr.close();
 		} catch (IOException e) {
-			// e.printStackTrace();
+
 			throw new DaoException();
 		}
 
@@ -46,7 +42,7 @@ public class BookDaoImpl implements BookDao {
 		List<Book> booksFoundByAuthorName = new ArrayList<>();
 		author = author.toLowerCase();
 		try {
-			readFile(datafile);
+			readFile(Main.datafile);
 
 		} catch (IOException e) {
 			// e.printStackTrace();
@@ -103,7 +99,7 @@ public class BookDaoImpl implements BookDao {
 		List<Book> booksFoundByPrice = new ArrayList<>();
 
 		try {
-			readFile(datafile);
+			readFile(Main.datafile);
 
 		} catch (IOException e) {
 

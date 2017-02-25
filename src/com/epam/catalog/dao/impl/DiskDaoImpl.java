@@ -1,16 +1,11 @@
 package com.epam.catalog.dao.impl;
 
 import com.epam.catalog.bean.Disk;
-
 import com.epam.catalog.dao.DiskDao;
 import com.epam.catalog.dao.exception.DaoException;
+import com.epam.catalog.view.Main;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,7 +13,7 @@ import java.util.Set;
 
 public class DiskDaoImpl implements DiskDao {
 	private Set<Disk> disks = new HashSet<>();
-	String datafile = Paths.get("data/units.txt").toAbsolutePath().toString();
+
 
 	public Set<Disk> getDisks() {
 		return disks;
@@ -32,7 +27,7 @@ public class DiskDaoImpl implements DiskDao {
 	public void addDisk(String disk) throws DaoException {
 		FileWriter wr = null;
 		try {
-			wr = new FileWriter(datafile, true);
+			wr = new FileWriter(Main.datafile, true);
 			wr.append("\n" + disk);
 			wr.flush();
 			wr.close();
@@ -50,7 +45,7 @@ public class DiskDaoImpl implements DiskDao {
 		List<Disk> disksFoundByPrice = new ArrayList<>();
 
 		try {
-			readFile(datafile);
+			readFile(Main.datafile);
 
 		} catch (IOException e) {
 
@@ -73,7 +68,7 @@ public class DiskDaoImpl implements DiskDao {
 		List<Disk> disksFoundByName = new ArrayList<>();
 
 		try {
-			readFile(datafile);
+			readFile(Main.datafile);
 
 		} catch (IOException e) {
 			// e.printStackTrace();
