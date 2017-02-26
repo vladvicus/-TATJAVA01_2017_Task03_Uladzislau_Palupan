@@ -17,6 +17,3 @@ disk,CD,Mexicanissimo(Yanni),2013,1.2
 film,Green mile,USA,1998,8
 film,Armagedon,USA,2005,6
 film,Knockin on Heavens Door,USA,2007,10
-book,db,sv,34,33.0
-book,th,dfh,46,46.0
-disk,rg,rh,363,436.0

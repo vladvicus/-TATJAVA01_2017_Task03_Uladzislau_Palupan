@@ -6,112 +6,77 @@ import com.epam.catalog.dao.exception.DaoException;
 import com.epam.catalog.view.Main;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class DiskDaoImpl implements DiskDao {
-	private Set<Disk> disks = new HashSet<>();
+    private Set<Disk> disks = new HashSet<>();
 
 
-	public Set<Disk> getDisks() {
-		return disks;
-	}
+    public Set<Disk> getDisks() {
+        return disks;
+    }
 
-	public void setDisks(Set<Disk> disks) {
-		this.disks = disks;
-	}
+    public void setDisks(Set<Disk> disks) {
+        this.disks = disks;
+    }
 
-	@Override
-	public void addDisk(String disk) throws DaoException {
-		FileWriter wr = null;
-		try {
-			wr = new FileWriter(Main.datafile, true);
-			wr.append("\n" + disk);
-			wr.flush();
-			wr.close();
-		} catch (IOException e) {
+    @Override
+    public void addDisk(String disk) throws DaoException {
+        FileWriter wr = null;
+        try {
+            wr = new FileWriter(Main.DATAFILE, true);
+            wr.append("\n" + disk);
+            wr.flush();
+            wr.close();
+        } catch (IOException e) {
 
-			throw new DaoException();
-		}
+            throw new DaoException();
+        }
 
-	}
+    }
 
-	@Override
-	public List<Disk> findDisksLessThanPrice(Double price) throws DaoException {
 
-		System.out.println("Price-->" + price);
-		List<Disk> disksFoundByPrice = new ArrayList<>();
+    @Override
+    public Set<Disk> readFile() throws DaoException {
+        BufferedReader br = null;
+        try {
+            FileInputStream fis = new FileInputStream(Main.DATAFILE);
+            br = new BufferedReader(new InputStreamReader(fis));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                for (int i = 0; i < data.length; i++) {
+                    data[i] = data[i].trim();
 
-		try {
-			readFile(Main.datafile);
+                }
+                if (data[0].startsWith("disk")) {
 
-		} catch (IOException e) {
+                    String type = data[1];
+                    String name = data[2];
+                    Integer year = Integer.parseInt(data[3]);
+                    Double price = Double.parseDouble(data[4]);
+                    disks.add(new Disk(type, name, year, price));
 
-			throw new DaoException("error in findDisksLessThenPrice method");
-		}
-		for (Disk oneDisk : disks) {
-			if (oneDisk.getPrice() < (price)) {
-				disksFoundByPrice.add(oneDisk);
-			}
-		}
+                } else
+                    continue;
 
-		return disksFoundByPrice;
+            }
 
-	}
+        } catch (IOException e) {
+            throw new DaoException(e);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
 
-	@Override
-	public List<Disk> findDisksByName(String name) throws DaoException {
+                System.out.println("Error trying to close InputStream! ");
+                throw new DaoException(e);
+            }
+        }
 
-		System.out.println("Name-->" + name);
-		List<Disk> disksFoundByName = new ArrayList<>();
-
-		try {
-			readFile(Main.datafile);
-
-		} catch (IOException e) {
-			// e.printStackTrace();
-			throw new DaoException(e);
-		}
-		for (Disk oneDisk : disks) {
-			if (oneDisk.getName().toLowerCase().equals(name.toLowerCase()) || 
-					(oneDisk.getName().toLowerCase().contains(name.toLowerCase()))) {
-				disksFoundByName.add(oneDisk);
-			}
-		}
-		System.out.println("The list of disks with name:" + name);
-
-		return disksFoundByName;
-	}
-
-	public Set<Disk> readFile(String fname) throws IOException {
-
-		FileInputStream fis = new FileInputStream(fname);
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-		String line;
-		while ((line = br.readLine()) != null) {
-			String[] data = line.split(",");
-			for (int i = 0; i < data.length; i++) {
-				data[i] = data[i].trim();
-
-			}
-			if (data[0].startsWith("disk")) {
-
-				String type = data[1];
-				String name = data[2];
-				Integer year = Integer.parseInt(data[3]);
-				Double price = Double.parseDouble(data[4]);
-				disks.add(new Disk(type, name, year, price));
-
-			} else
-				continue;
-
-		}
-		br.close();
-
-		System.out.println("Disks are suscessfully loaded from file!");
-		return disks;
-	}
+        System.out.println("Disks are suscessfully loaded from file!");
+        return disks;
+    }
 
 }

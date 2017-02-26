@@ -9,80 +9,99 @@ import com.epam.catalog.service.exception.ServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class DiskServiceImpl implements DiskService {
-	static final String RESPONSE = "Error during searching procedure from DiskServiceImpl ";
-	@Override
-	public List<Disk> addDisk() throws ServiceException {
+    static final String RESPONSE = "Error during searching procedure from DiskServiceImpl ";
+
+    @Override
+    public List<Disk> addDisk() throws ServiceException {
 
 
-		Disk disk = new Disk();
-		Disk newDisk = disk.makeDisk();
-		List<Disk> addedDisk = new ArrayList<Disk>();
-		addedDisk.add(newDisk);
+        Disk disk = new Disk();
+        Disk newDisk = disk.makeDisk();
+        List<Disk> addedDisk = new ArrayList<Disk>();
+        addedDisk.add(newDisk);
 
-		StringBuffer sb = new StringBuffer();
-		sb.append(newDisk.getType() + ",");
-		sb.append(newDisk.getName() + ",");
-		sb.append(newDisk.getYear() + ",");
-		sb.append(newDisk.getPrice());
+        StringBuffer sb = new StringBuffer();
+        sb.append(newDisk.getType() + ",");
+        sb.append(newDisk.getName() + ",");
+        sb.append(newDisk.getYear() + ",");
+        sb.append(newDisk.getPrice());
 
-		String message = "disk," + sb.toString();
+        String message = "disk," + sb.toString();
 
-		System.out.println(message + " added to file!!");
-		DaoFactory daoFactory = DaoFactory.getInstance();
-		DiskDao diskDao = daoFactory.getDiskDao();
-		try {
-			diskDao.addDisk(message);
+        System.out.println(message + " added to file!!");
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        DiskDao diskDao = daoFactory.getDiskDao();
+        try {
+            diskDao.addDisk(message);
 
-		} catch (DaoException e) {
+        } catch (DaoException e) {
 
-			throw new ServiceException(RESPONSE+ e);
+            throw new ServiceException(RESPONSE + e);
 
-			// write log
-
-
-		}
-		return addedDisk;
-	}
-
-	@Override
-	public List<Disk> findDisksByName(String name) throws ServiceException {
+            // write log
 
 
-		try {
-			DaoFactory daoFactory = DaoFactory.getInstance();
-			DiskDao diskDao = daoFactory.getDiskDao();
+        }
+        return addedDisk;
+    }
 
-			List<Disk> disksFind = diskDao.findDisksByName(name);
+    @Override
+    public List<Disk> findDisksByName(String name) throws ServiceException {
+        List<Disk> disksFoundByName = new ArrayList<>();
 
-			return disksFind;
-		} catch (DaoException e) {
 
-			throw new ServiceException(RESPONSE+e);
+        try {
+            DaoFactory daoFactory = DaoFactory.getInstance();
+            DiskDao diskDao = daoFactory.getDiskDao();
 
-			// write log
-		}
-
-	}
-
-	@Override
-	public List<Disk> findDisksLessThanPrice(Double price) throws ServiceException {
+            Set<Disk> disksFind = diskDao.readFile();
+            for (Disk oneDisk : disksFind) {
+                if (oneDisk.getName().toLowerCase().equals(name.toLowerCase()) ||
+                        (oneDisk.getName().toLowerCase().contains(name.toLowerCase()))) {
+                    disksFoundByName.add(oneDisk);
+                }
+            }
+            System.out.println("The list of disks with name:" + name);
 
 
 
-		try {
-			DaoFactory daoFactory = DaoFactory.getInstance();
-			DiskDao diskDao = daoFactory.getDiskDao();
+        } catch (DaoException e) {
 
-			List<Disk> disksFind = diskDao.findDisksLessThanPrice(price);
+            throw new ServiceException(RESPONSE + e);
 
-			return disksFind;
-		} catch (DaoException e) {
+            // write log
+        }
+        return disksFoundByName;
+    }
 
-			throw new ServiceException(RESPONSE+e);
+    @Override
+    public List<Disk> findDisksLessThanPrice(Double price) throws ServiceException {
 
-		}
-	}
+        List<Disk> disksFoundByPrice = new ArrayList<>();
+
+        try {
+            DaoFactory daoFactory = DaoFactory.getInstance();
+            DiskDao diskDao = daoFactory.getDiskDao();
+
+            Set<Disk> disksFind = diskDao.readFile();
+
+            for (Disk oneDisk : disksFind) {
+                if (oneDisk.getPrice() < (price)) {
+                    disksFoundByPrice.add(oneDisk);
+                }
+            }
+
+
+
+        } catch (DaoException e) {
+
+            throw new ServiceException(RESPONSE + e);
+
+        }
+        return disksFoundByPrice;
+    }
 
 }

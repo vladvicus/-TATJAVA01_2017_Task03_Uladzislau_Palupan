@@ -84,8 +84,8 @@ public class BookServiceImpl implements BookService {
             DaoFactory daoFactory = DaoFactory.getInstance();
             BookDao bookDao = daoFactory.getBookDao();
         try {
-            Set<Book> allBbooks = bookDao.readFile();
-            for (Book oneBook : allBbooks) {
+            Set<Book> allBooks = bookDao.readFile();
+            for (Book oneBook : allBooks) {
 
                 if (oneBook.getAuthor().toLowerCase().equals(author.toLowerCase())
                         || (oneBook.getAuthor().toLowerCase().contains(author.toLowerCase()))) {

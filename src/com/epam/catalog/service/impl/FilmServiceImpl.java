@@ -9,6 +9,7 @@ import com.epam.catalog.service.exception.ServiceException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class FilmServiceImpl implements FilmService {
 	static final String RESPONSE = "Error during searching procedure from FilmServiceImpl ";
@@ -42,40 +43,54 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public List<Film> findFilmsByName(String name) throws ServiceException {
+		List<Film> filmsFoundByName = new ArrayList<>();
 
-		try {
 			DaoFactory daoFactory = DaoFactory.getInstance();
 			FilmDao filmDao = daoFactory.getFilmDao();
+		try {
+			Set<Film> filmsFind = filmDao.readFile();
 
-			List<Film> filmsFind = filmDao.findFilmsByName(name);
+			for (Film oneFilm : filmsFind) {
+				if (oneFilm.getName().toLowerCase().equals(name.toLowerCase())
+						|| (oneFilm.getName().toLowerCase().contains(name.toLowerCase()))) {
+					filmsFoundByName.add(oneFilm);
+				}
+			}
+			System.out.println("The list of films with name:" + name);
 
-			return filmsFind;
+
 		} catch (DaoException e) {
 
 			throw new ServiceException(RESPONSE+e);
 
 			// write log
 		}
-		
+		return filmsFoundByName;
 	}
 
 	@Override
 	public List<Film> findFilmsGreaterThanRating(Integer rating) throws ServiceException {
-
+		List<Film> filmsFoundByRating = new ArrayList<>();
 		try {
 			DaoFactory daoFactory = DaoFactory.getInstance();
 			FilmDao filmDao = daoFactory.getFilmDao();
 
-			List<Film> filmsFind = filmDao.findFilmsGreaterThanRating(rating);
+			Set<Film> filmsFind = filmDao.readFile();
 
-			return filmsFind;
+			for (Film oneFilm : filmsFind) {
+				if (oneFilm.getRating() > (rating)) {
+					filmsFoundByRating.add(oneFilm);
+				}
+			}
+
+
 		} catch (DaoException e) {
 
 			throw new ServiceException(RESPONSE+e);
 
 			// write log
 		}
-		
+		return filmsFoundByRating;
 	}
 
   

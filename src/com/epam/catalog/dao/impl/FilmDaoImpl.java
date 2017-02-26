@@ -6,110 +6,75 @@ import com.epam.catalog.dao.exception.DaoException;
 import com.epam.catalog.view.Main;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class FilmDaoImpl implements FilmDao {
-	private Set<Film> films = new HashSet<>();
+    private Set<Film> films = new HashSet<>();
 
 
-	public Set<Film> getFilms() {
-		return films;
-	}
+    public Set<Film> getFilms() {
+        return films;
+    }
 
-	public void setFilms(Set<Film> films) {
-		this.films = films;
-	}
+    public void setFilms(Set<Film> films) {
+        this.films = films;
+    }
 
-	@Override
-	public void addFilm(String film) throws DaoException {
-		FileWriter wr = null;
-		try {
-			wr = new FileWriter(Main.datafile, true);
-			wr.append("\n" + film);
-			wr.flush();
-			wr.close();
-		} catch (IOException e) {
+    @Override
+    public void addFilm(String film) throws DaoException {
+        FileWriter wr = null;
+        try {
+            wr = new FileWriter(Main.DATAFILE, true);
+            wr.append("\n" + film);
+            wr.flush();
+            wr.close();
+        } catch (IOException e) {
 
-			throw new DaoException();
-		}
+            throw new DaoException();
+        }
 
-	}
+    }
 
-	@Override
-	public List<Film> findFilmsByName(String name) throws DaoException {
 
-		System.out.println("Name-->" + name);
-		List<Film> filmsFoundByName = new ArrayList<>();
+    @Override
+    public Set<Film> readFile() throws DaoException {
 
-		try {
-			readFile(Main.datafile);
+        BufferedReader br = null;
+        try {
+            FileInputStream fis = new FileInputStream(Main.DATAFILE);
+            br = new BufferedReader(new InputStreamReader(fis));
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                for (int i = 0; i < data.length; i++) {
+                    data[i] = data[i].trim();
 
-		} catch (IOException e) {
+                }
+                if (data[0].startsWith("film")) {
 
-			throw new DaoException(e);
-		}
-		for (Film oneFilm : films) {
-			if (oneFilm.getName().toLowerCase().equals(name.toLowerCase())
-					|| (oneFilm.getName().toLowerCase().contains(name.toLowerCase()))) {
-				filmsFoundByName.add(oneFilm);
-			}
-		}
-		System.out.println("The list of films with name:" + name);
+                    String name = data[1];
+                    String country = data[2];
+                    Integer year = Integer.parseInt(data[3]);
+                    Integer rating = Integer.parseInt(data[4]);
+                    films.add(new Film(name, country, year, rating));
 
-		return filmsFoundByName;
-	}
+                } else
+                    continue;
 
-	@Override
-	public List<Film> findFilmsGreaterThanRating(Integer rating) throws DaoException {
+            }
+        } catch (IOException e) {
+            throw new DaoException(e);
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                throw new DaoException(e);
+            }
+        }
 
-		System.out.println("Rating-->" + rating);
-		List<Film> filmsFoundByPrice = new ArrayList<>();
 
-		try {
-			readFile(Main.datafile);
-
-		} catch (IOException e) {
-
-			throw new DaoException("error in findFilmsGraterThanRating method");
-		}
-		for (Film oneFilm : films) {
-			if (oneFilm.getRating() > (rating)) {
-				filmsFoundByPrice.add(oneFilm);
-			}
-		}
-
-		return filmsFoundByPrice;
-	}
-
-	public Set<Film> readFile(String fname) throws IOException {
-
-		FileInputStream fis = new FileInputStream(fname);
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-		String line;
-		while ((line = br.readLine()) != null) {
-			String[] data = line.split(",");
-			for (int i = 0; i < data.length; i++) {
-				data[i] = data[i].trim();
-
-			}
-			if (data[0].startsWith("film")) {
-
-				String name = data[1];
-				String country = data[2];
-				Integer year = Integer.parseInt(data[3]);
-				Integer rating = Integer.parseInt(data[4]);
-				films.add(new Film(name, country, year, rating));
-
-			} else
-				continue;
-
-		}
-		br.close();
-
-		System.out.println("Films are suscessfully loaded from file!");
-		return films;
-	}
+        System.out.println("Films are suscessfully loaded from file!");
+        return films;
+    }
 }

@@ -7,8 +7,6 @@ import com.epam.catalog.dao.impl.BookDaoImpl;
 import com.epam.catalog.dao.impl.DiskDaoImpl;
 import com.epam.catalog.dao.impl.FilmDaoImpl;
 
-import java.nio.file.Paths;
-
 
 public final class DaoFactory {
 
@@ -25,6 +23,8 @@ public final class DaoFactory {
     {
         return instance;
     }
+
+
 
     public BookDao getBookDao()
     {

@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-	public final static String datafile = Paths.get("data/units.txt").toAbsolutePath().toString();
+	public final static String DATAFILE = Paths.get("data/units.txt").toAbsolutePath().toString();
 	public static void main(String[] args) {
 		int flag;
 		Controller first = new Controller();

@@ -9,7 +9,7 @@ import java.util.List;
 public interface BookService {
 
 
-     List<Book> addBook() throws ServiceException;
+     List<?> addBook() throws ServiceException;
 
 
 
