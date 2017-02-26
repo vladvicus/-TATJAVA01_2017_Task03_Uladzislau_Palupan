@@ -18,3 +18,5 @@ film,Green mile,USA,1998,8
 film,Armagedon,USA,2005,6
 film,Knockin on Heavens Door,USA,2007,10
 
+
+book,fui',sfsda,57,57.0

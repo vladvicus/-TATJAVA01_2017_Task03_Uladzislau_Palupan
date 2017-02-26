@@ -13,7 +13,7 @@ public interface BookService {
 
 
 
-   // Book findOneBook(String name) throws ServiceException;
+
 
     List<Book> findBooksLessThenPrice(Double price) throws ServiceException;
 

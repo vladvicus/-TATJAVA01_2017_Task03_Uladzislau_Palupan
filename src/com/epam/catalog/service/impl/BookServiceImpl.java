@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService {
         String message = "book," + sb.toString();
 
         DaoFactory daoFactory = DaoFactory.getInstance();
-      //  BookDao bookDao = daoFactory.getBookDao();
+
         UniDao uniDao=daoFactory.getUniDao();
         try {
             uniDao.addItem(message);
@@ -55,7 +55,7 @@ public class BookServiceImpl implements BookService {
             return Collections.emptyList();
         }
         DaoFactory daoFactory = DaoFactory.getInstance();
-      //  BookDao bookDao = daoFactory.getBookDao();
+
         UniDao uniDao=daoFactory.getUniDao();
         try {
             Set<Book> allBooks = uniDao.readFile(PARAMETER);
@@ -84,7 +84,7 @@ public class BookServiceImpl implements BookService {
         }
 
             DaoFactory daoFactory = DaoFactory.getInstance();
-           // BookDao bookDao = daoFactory.getBookDao();
+
         UniDao uniDao=daoFactory.getUniDao();
         try {
             Set<Book> allBooks = uniDao.readFile(PARAMETER);

@@ -32,7 +32,7 @@ public class FilmServiceImpl implements FilmService {
 
         String message = "film," + sb.toString();
         DaoFactory daoFactory = DaoFactory.getInstance();
-        //  FilmDao filmDao = daoFactory.getFilmDao();
+
         UniDao uniDao = daoFactory.getUniDao();
         try {
             uniDao.addItem(message);
@@ -49,7 +49,7 @@ public class FilmServiceImpl implements FilmService {
         List<Film> filmsFoundByName = new ArrayList<>();
 
         DaoFactory daoFactory = DaoFactory.getInstance();
-        //FilmDao filmDao = daoFactory.getFilmDao();
+
         UniDao uniDao = daoFactory.getUniDao();
         try {
             Set<Film> filmsFind = uniDao.readFile(PARAMETER);
@@ -77,7 +77,7 @@ public class FilmServiceImpl implements FilmService {
         List<Film> filmsFoundByRating = new ArrayList<>();
 
         DaoFactory daoFactory = DaoFactory.getInstance();
-        //	FilmDao filmDao = daoFactory.getFilmDao();
+
         UniDao uniDao = daoFactory.getUniDao();
         try {
             Set<Film> filmsFind = uniDao.readFile(PARAMETER);

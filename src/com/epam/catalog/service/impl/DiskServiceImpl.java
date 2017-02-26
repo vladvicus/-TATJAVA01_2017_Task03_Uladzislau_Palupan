@@ -34,7 +34,7 @@ public class DiskServiceImpl implements DiskService {
 
         System.out.println(message + " added to file!!");
         DaoFactory daoFactory = DaoFactory.getInstance();
-       // DiskDao diskDao = daoFactory.getDiskDao();
+
         UniDao uniDao=daoFactory.getUniDao();
 
         try {
@@ -58,7 +58,7 @@ public class DiskServiceImpl implements DiskService {
 
 
             DaoFactory daoFactory = DaoFactory.getInstance();
-            //DiskDao diskDao = daoFactory.getDiskDao();
+
             UniDao uniDao=daoFactory.getUniDao();
       try{
             Set<Disk> disksFind = uniDao.readFile(PARAMETER);
@@ -87,7 +87,7 @@ public class DiskServiceImpl implements DiskService {
 
         try {
             DaoFactory daoFactory = DaoFactory.getInstance();
-          //  DiskDao diskDao = daoFactory.getDiskDao();
+
             UniDao uniDao=daoFactory.getUniDao();
 
             Set<Disk> disksFind = uniDao.readFile(PARAMETER);

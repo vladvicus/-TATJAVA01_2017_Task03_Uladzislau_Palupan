@@ -1,21 +1,19 @@
 package com.epam.catalog.controller.command.impl;
 
-import java.util.List;
-
-import com.epam.catalog.bean.Disk;
 import com.epam.catalog.bean.Film;
 import com.epam.catalog.controller.command.Command;
-import com.epam.catalog.service.DiskService;
 import com.epam.catalog.service.FilmService;
 import com.epam.catalog.service.exception.ServiceException;
 import com.epam.catalog.service.factory.ServiceFactory;
+
+import java.util.List;
 
 public class SearchFilmBiggerThanRating implements Command {
 
 	@Override
 	public List<?> execute(String request) {
 	 
-		System.out.println(request);
+
 		request = request.replaceAll("\\s{2,}", " ");
 		String[] arr = request.split(",");
 		if (arr.length==1) return null;
