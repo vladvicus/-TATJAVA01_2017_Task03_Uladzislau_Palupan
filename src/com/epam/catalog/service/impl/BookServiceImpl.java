@@ -8,75 +8,101 @@ import com.epam.catalog.service.BookService;
 import com.epam.catalog.service.exception.ServiceException;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 public class BookServiceImpl implements BookService {
-	static final String RESPONSE = "Error during searching procedure from BookServiceImpl ";
-	@Override
-	public List<Book> addBook() throws ServiceException {
+    static final String RESPONSE = "Error during searching procedure from BookServiceImpl ";
+
+    @Override
+    public List<Book> addBook() throws ServiceException {
 
 
-			Book book = new Book();
-			Book newBook = book.makeBook();
-			List<Book> addedBook = new ArrayList<Book>();
-			addedBook.add(newBook);
+        Book book = new Book();
+        Book newBook = book.makeBook();
+        List<Book> addedBook = new ArrayList<Book>();
+        addedBook.add(newBook);
 
-			StringBuffer sb = new StringBuffer();
-			sb.append(newBook.getAuthor() + ",");
-			sb.append(newBook.getName() + ",");
-			sb.append(newBook.getPages() + ",");
-			sb.append(newBook.getPrice());
-			String message = "book," + sb.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append(newBook.getAuthor() + ",");
+        sb.append(newBook.getName() + ",");
+        sb.append(newBook.getPages() + ",");
+        sb.append(newBook.getPrice());
+        String message = "book," + sb.toString();
 
-			DaoFactory daoFactory = DaoFactory.getInstance();
-			BookDao bookDao = daoFactory.getBookDao();
-		try {
-			bookDao.addBook(message);
-
-
-		} catch (DaoException e) {
-
-			throw new ServiceException(RESPONSE + e);
-
-			// write log
-		}
-		return addedBook;
-	}
-
-	@Override
-	public List<Book> findBooksLessThenPrice(Double price) throws ServiceException {
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        BookDao bookDao = daoFactory.getBookDao();
+        try {
+            bookDao.addBook(message);
 
 
-		try {
-			DaoFactory daoFactory = DaoFactory.getInstance();
-			BookDao bookDao = daoFactory.getBookDao();
+        } catch (DaoException e) {
 
-			List<Book> booksFind = bookDao.findBooksLessThenPrice(price);
+            throw new ServiceException(RESPONSE + e);
 
-			return booksFind;
-		} catch (DaoException e) {
+            // write log
+        }
+        return addedBook;
+    }
 
-			throw new ServiceException(RESPONSE+e);
+    @Override
+    public List<Book> findBooksLessThenPrice(Double price) throws ServiceException {
+        List<Book> booksFoundByPrice = new ArrayList<>();
+        if (price < 0) {
+            System.out.println("Price cannot be negative.Reenter the price");
+            return Collections.emptyList();
+        }
+        DaoFactory daoFactory = DaoFactory.getInstance();
+        BookDao bookDao = daoFactory.getBookDao();
+        try {
+            Set<Book> allBooks = bookDao.readFile();
+            for (Book oneBook : allBooks) {
+                if (oneBook.getPrice() < (price)) {
+                    booksFoundByPrice.add(oneBook);
+                }
+            }
 
-		}
-	}
+        } catch (DaoException e) {
+            throw new ServiceException(RESPONSE + e);
+        }
+        if (booksFoundByPrice.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return booksFoundByPrice;
+        }
+    }
 
-	@Override
-	public List<Book> findBooksByAuthor(String author) throws ServiceException {
+    @Override
+    public List<Book> findBooksByAuthor(String author) throws ServiceException {
+        List<Book> booksFoundByAuthorName = new ArrayList<>();
+        if (author.isEmpty()) {
+            System.out.println("Searching on empty string!!Reenter the parameter author.");
+            return Collections.emptyList();
+        }
 
-		try {
-			DaoFactory daoFactory = DaoFactory.getInstance();
-			BookDao bookDao = daoFactory.getBookDao();
+            DaoFactory daoFactory = DaoFactory.getInstance();
+            BookDao bookDao = daoFactory.getBookDao();
+        try {
+            Set<Book> allBbooks = bookDao.readFile();
+            for (Book oneBook : allBbooks) {
 
-			List<Book> booksFind = bookDao.findBooksByAuthor(author);
+                if (oneBook.getAuthor().toLowerCase().equals(author.toLowerCase())
+                        || (oneBook.getAuthor().toLowerCase().contains(author.toLowerCase()))) {
+                    booksFoundByAuthorName.add(oneBook);
+                }
+            }
 
-			return booksFind;
-		} catch (DaoException e) {
 
-			throw new ServiceException(RESPONSE+e);
+        } catch (DaoException e) {
 
-			// write log
-		}
-
-	}
+            throw new ServiceException(RESPONSE + e);
+            // write log
+        }
+        if (booksFoundByAuthorName.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            return booksFoundByAuthorName;
+        }
+    }
 }

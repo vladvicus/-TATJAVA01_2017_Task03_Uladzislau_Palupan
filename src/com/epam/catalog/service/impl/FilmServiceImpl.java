@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilmServiceImpl implements FilmService {
-
+	static final String RESPONSE = "Error during searching procedure from FilmServiceImpl ";
 	@Override
 	public List<Film> addFilm() throws ServiceException {
-		String response=null;
+
 
 		Film film = new Film();
 		Film newFilm = film.makeFilm();
@@ -33,8 +33,8 @@ public class FilmServiceImpl implements FilmService {
 		try {
 			filmDao.addFilm(message);
 		} catch (DaoException e) {
-			response = "Error during searching procedure from FilmServiceImpl";
-			throw new ServiceException(response);
+
+			throw new ServiceException(RESPONSE+e);
 	
 		}
 		return  addedFilm;
@@ -42,7 +42,7 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public List<Film> findFilmsByName(String name) throws ServiceException {
-		String response = null;
+
 		try {
 			DaoFactory daoFactory = DaoFactory.getInstance();
 			FilmDao filmDao = daoFactory.getFilmDao();
@@ -51,8 +51,8 @@ public class FilmServiceImpl implements FilmService {
 
 			return filmsFind;
 		} catch (DaoException e) {
-			response = "Error during searching procedure from FilmServiceImpl";
-			throw new ServiceException(response);
+
+			throw new ServiceException(RESPONSE+e);
 
 			// write log
 		}
@@ -61,7 +61,7 @@ public class FilmServiceImpl implements FilmService {
 
 	@Override
 	public List<Film> findFilmsGreaterThanRating(Integer rating) throws ServiceException {
-		String response = null;
+
 		try {
 			DaoFactory daoFactory = DaoFactory.getInstance();
 			FilmDao filmDao = daoFactory.getFilmDao();
@@ -70,8 +70,8 @@ public class FilmServiceImpl implements FilmService {
 
 			return filmsFind;
 		} catch (DaoException e) {
-			response = "Error during searching procedure from FilmServiceImpl";
-			throw new ServiceException(response);
+
+			throw new ServiceException(RESPONSE+e);
 
 			// write log
 		}

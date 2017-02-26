@@ -31,11 +31,11 @@ public class BookDaoImpl implements BookDao {
 			wr.close();
 		} catch (IOException e) {
 
-			throw new DaoException();
+			throw new DaoException(e);
 		}
 
 	}
-
+/*
 	@Override
 	public List<Book> findBooksByAuthor(String author) throws DaoException {
 		System.out.println("AUTHOR-->" + author);
@@ -62,38 +62,52 @@ public class BookDaoImpl implements BookDao {
 
 			return booksFoundByAuthorName;
 		}
-	}
+	}*/
+	@Override
+	public Set<Book> readFile() throws DaoException {
 
-	public Set<Book> readFile(String fname) throws IOException {
+		BufferedReader br = null;
+		try {
+			FileInputStream fis = new FileInputStream(Main.datafile);
+			br = new BufferedReader(new InputStreamReader(fis));
+			String line;
+			while ((line = br.readLine()) != null) {
+                String[] data = line.split(",");
+                for (int i = 0; i < data.length; i++) {
+                    data[i] = data[i].trim();
 
-		FileInputStream fis = new FileInputStream(fname);
-		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-		String line;
-		while ((line = br.readLine()) != null) {
-			String[] data = line.split(",");
-			for (int i = 0; i < data.length; i++) {
-				data[i] = data[i].trim();
+                }
+                if (data[0].startsWith("book")) {
 
-			}
-			if (data[0].startsWith("book")) {
+                    String name = data[1];
+                    String author = data[2];
+                    Integer page = Integer.parseInt(data[3]);
+                    Double price = Double.parseDouble(data[4]);
+                    books.add(new Book(name, author, page, price));
 
-				String name = data[1];
-				String author = data[2];
-				Integer page = Integer.parseInt(data[3]);
-				Double price = Double.parseDouble(data[4]);
-				books.add(new Book(name, author, page, price));
+                } else
+                    continue;
 
-			} else
-				continue;
+            }
+		} catch (IOException e) {
+			throw new DaoException(e);
+		} finally {
 
 		}
-		br.close();
+
+		try {
+			br.close();
+		} catch (IOException e) {
+
+			System.out.println("Error trying to close InputStream! ");
+			throw new DaoException(e);
+		}
 
 		System.out.println("Books are suscessfully loaded from file!");
 		return books;
 	}
 
-	@Override
+	/*@Override
 	public List<Book> findBooksLessThenPrice(Double price) throws DaoException {
 		System.out.println("Price-->" + price);
 		List<Book> booksFoundByPrice = new ArrayList<>();
@@ -113,6 +127,6 @@ public class BookDaoImpl implements BookDao {
 
 		return booksFoundByPrice;
 
-	}
+	}*/
 
 }
