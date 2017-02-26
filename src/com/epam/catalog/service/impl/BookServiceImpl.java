@@ -1,7 +1,7 @@
 package com.epam.catalog.service.impl;
 
 import com.epam.catalog.bean.Book;
-import com.epam.catalog.dao.BookDao;
+import com.epam.catalog.dao.UniDao;
 import com.epam.catalog.dao.exception.DaoException;
 import com.epam.catalog.dao.factory.DaoFactory;
 import com.epam.catalog.service.BookService;
@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class BookServiceImpl implements BookService {
     static final String RESPONSE = "Error during searching procedure from BookServiceImpl ";
-
+  static  final String PARAMETER="book";
     @Override
     public List<Book> addBook() throws ServiceException {
 
@@ -24,7 +24,7 @@ public class BookServiceImpl implements BookService {
         List<Book> addedBook = new ArrayList<Book>();
         addedBook.add(newBook);
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(newBook.getAuthor() + ",");
         sb.append(newBook.getName() + ",");
         sb.append(newBook.getPages() + ",");
@@ -32,9 +32,10 @@ public class BookServiceImpl implements BookService {
         String message = "book," + sb.toString();
 
         DaoFactory daoFactory = DaoFactory.getInstance();
-        BookDao bookDao = daoFactory.getBookDao();
+      //  BookDao bookDao = daoFactory.getBookDao();
+        UniDao uniDao=daoFactory.getUniDao();
         try {
-            bookDao.addBook(message);
+            uniDao.addItem(message);
 
 
         } catch (DaoException e) {
@@ -54,9 +55,10 @@ public class BookServiceImpl implements BookService {
             return Collections.emptyList();
         }
         DaoFactory daoFactory = DaoFactory.getInstance();
-        BookDao bookDao = daoFactory.getBookDao();
+      //  BookDao bookDao = daoFactory.getBookDao();
+        UniDao uniDao=daoFactory.getUniDao();
         try {
-            Set<Book> allBooks = bookDao.readFile();
+            Set<Book> allBooks = uniDao.readFile(PARAMETER);
             for (Book oneBook : allBooks) {
                 if (oneBook.getPrice() < (price)) {
                     booksFoundByPrice.add(oneBook);
@@ -82,9 +84,10 @@ public class BookServiceImpl implements BookService {
         }
 
             DaoFactory daoFactory = DaoFactory.getInstance();
-            BookDao bookDao = daoFactory.getBookDao();
+           // BookDao bookDao = daoFactory.getBookDao();
+        UniDao uniDao=daoFactory.getUniDao();
         try {
-            Set<Book> allBooks = bookDao.readFile();
+            Set<Book> allBooks = uniDao.readFile(PARAMETER);
             for (Book oneBook : allBooks) {
 
                 if (oneBook.getAuthor().toLowerCase().equals(author.toLowerCase())

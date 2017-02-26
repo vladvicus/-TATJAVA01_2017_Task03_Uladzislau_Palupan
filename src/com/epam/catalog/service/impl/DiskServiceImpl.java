@@ -1,7 +1,7 @@
 package com.epam.catalog.service.impl;
 
 import com.epam.catalog.bean.Disk;
-import com.epam.catalog.dao.DiskDao;
+import com.epam.catalog.dao.UniDao;
 import com.epam.catalog.dao.exception.DaoException;
 import com.epam.catalog.dao.factory.DaoFactory;
 import com.epam.catalog.service.DiskService;
@@ -13,6 +13,7 @@ import java.util.Set;
 
 public class DiskServiceImpl implements DiskService {
     static final String RESPONSE = "Error during searching procedure from DiskServiceImpl ";
+    static final String PARAMETER = "disk";
 
     @Override
     public List<Disk> addDisk() throws ServiceException {
@@ -23,7 +24,7 @@ public class DiskServiceImpl implements DiskService {
         List<Disk> addedDisk = new ArrayList<Disk>();
         addedDisk.add(newDisk);
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append(newDisk.getType() + ",");
         sb.append(newDisk.getName() + ",");
         sb.append(newDisk.getYear() + ",");
@@ -33,9 +34,11 @@ public class DiskServiceImpl implements DiskService {
 
         System.out.println(message + " added to file!!");
         DaoFactory daoFactory = DaoFactory.getInstance();
-        DiskDao diskDao = daoFactory.getDiskDao();
+       // DiskDao diskDao = daoFactory.getDiskDao();
+        UniDao uniDao=daoFactory.getUniDao();
+
         try {
-            diskDao.addDisk(message);
+            uniDao.addItem(message);
 
         } catch (DaoException e) {
 
@@ -53,11 +56,12 @@ public class DiskServiceImpl implements DiskService {
         List<Disk> disksFoundByName = new ArrayList<>();
 
 
-        try {
-            DaoFactory daoFactory = DaoFactory.getInstance();
-            DiskDao diskDao = daoFactory.getDiskDao();
 
-            Set<Disk> disksFind = diskDao.readFile();
+            DaoFactory daoFactory = DaoFactory.getInstance();
+            //DiskDao diskDao = daoFactory.getDiskDao();
+            UniDao uniDao=daoFactory.getUniDao();
+      try{
+            Set<Disk> disksFind = uniDao.readFile(PARAMETER);
             for (Disk oneDisk : disksFind) {
                 if (oneDisk.getName().toLowerCase().equals(name.toLowerCase()) ||
                         (oneDisk.getName().toLowerCase().contains(name.toLowerCase()))) {
@@ -65,7 +69,6 @@ public class DiskServiceImpl implements DiskService {
                 }
             }
             System.out.println("The list of disks with name:" + name);
-
 
 
         } catch (DaoException e) {
@@ -84,16 +87,16 @@ public class DiskServiceImpl implements DiskService {
 
         try {
             DaoFactory daoFactory = DaoFactory.getInstance();
-            DiskDao diskDao = daoFactory.getDiskDao();
+          //  DiskDao diskDao = daoFactory.getDiskDao();
+            UniDao uniDao=daoFactory.getUniDao();
 
-            Set<Disk> disksFind = diskDao.readFile();
+            Set<Disk> disksFind = uniDao.readFile(PARAMETER);
 
             for (Disk oneDisk : disksFind) {
                 if (oneDisk.getPrice() < (price)) {
                     disksFoundByPrice.add(oneDisk);
                 }
             }
-
 
 
         } catch (DaoException e) {

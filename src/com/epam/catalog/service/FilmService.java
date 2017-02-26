@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FilmService {
 
-	List<Film> addFilm() throws ServiceException;
+	List<?> addFilm() throws ServiceException;
 
 	List<Film> findFilmsByName(String name) throws ServiceException;
 

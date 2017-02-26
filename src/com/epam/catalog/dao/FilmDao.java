@@ -11,7 +11,5 @@ public interface FilmDao {
 
 	Set<Film> readFile() throws DaoException;
 
-	// List<Film> findFilmsByName(String name) throws DaoException;
 
-//	List<Film> findFilmsGreaterThanRating(Integer rating) throws DaoException;
 }

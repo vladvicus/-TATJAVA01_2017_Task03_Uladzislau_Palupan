@@ -36,34 +36,7 @@ public class BookDaoImpl implements BookDao {
 
     }
 
-    /*
-        @Override
-        public List<Book> findBooksByAuthor(String author) throws DaoException {
-            System.out.println("AUTHOR-->" + author);
-            List<Book> booksFoundByAuthorName = new ArrayList<>();
-            author = author.toLowerCase();
-            try {
-                readFile(Main.datafile);
 
-            } catch (IOException e) {
-                // e.printStackTrace();
-                throw new DaoException(e);
-            }
-            for (Book oneBook : books) {
-
-                if (oneBook.getAuthor().toLowerCase().equals(author.toLowerCase())
-                        || (oneBook.getAuthor().toLowerCase().contains(author.toLowerCase()))) {
-                    booksFoundByAuthorName.add(oneBook);
-                }
-            }
-            System.out.println("The list of books with author:" + author);
-            if (booksFoundByAuthorName.isEmpty()) {
-                return Collections.emptyList();
-            } else {
-
-                return booksFoundByAuthorName;
-            }
-        }*/
     @Override
     public Set<Book> readFile() throws DaoException {
 
@@ -105,26 +78,5 @@ public class BookDaoImpl implements BookDao {
         return books;
     }
 
-	/*@Override
-    public List<Book> findBooksLessThenPrice(Double price) throws DaoException {
-		System.out.println("Price-->" + price);
-		List<Book> booksFoundByPrice = new ArrayList<>();
-
-		try {
-			readFile(Main.datafile);
-
-		} catch (IOException e) {
-
-			throw new DaoException("error in findBooksLessThenPrice method");
-		}
-		for (Book oneBook : books) {
-			if (oneBook.getPrice() < (price)) {
-				booksFoundByPrice.add(oneBook);
-			}
-		}
-
-		return booksFoundByPrice;
-
-	}*/
 
 }
